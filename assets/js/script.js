@@ -128,10 +128,40 @@ $(".card .list-group").sortable({
     console.log("out", event.target);
   },
   update: function(event) {
-    console.log($(this).children());
+    // array to store the task data in
+    var tempArr =[];
+
+    // loop over current set of children in sortable list
+    $(this).children().each(function() {
+      var text= $(this)
+      .find("p")
+      .text()
+      .trim();
+
+      var date = $(this)
+      .find("span")
+      .text()
+      .trim();
+
+      // add task data to the temp array as an object
+      tempArr.push({
+        text: text,
+        date: date
+      });
+    });
+
+    // trim down the list's ID to match object prperty
+    var arrName = $(this)
+        .attr("id")
+        .replace("list-", "");
+
+    // update array on tasks object and save
+    tasks[arrName] = tempArr;
+    saveTasks();
+    
+    console.log(tempArr);
   }
 });
-
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
